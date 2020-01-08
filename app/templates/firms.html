@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    <script type="text/javascript">
+    function buttonClick (button)
+    {
+        document.getElementById("idFirm").value = button.id;
+        document.querySelector("input[id*='submit']").click();
+    }
+    </script>
+{% endblock %}
+
+{% block app_content %}
+    <div style='display: none;'>
+        <form action='' method='post' novalidate>
+            {{ form.hidden_tag() }}
+            {{ form.idFirm() }}
+            {{ form.submit() }}
+        </form>
+    </div>
+    <a href="{{ url_for('newFirm') }}" class="btn btn-default" role="button">Добавить фирму</a>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            {% for firm in firms %}
+                <div class="well well-sm">
+                    <p>
+                        <b>Фирма: {{ firm[2] }}</b> <br>
+                        ИНН: {{ firm[1] }}<br>
+                        Email: {{ firm[3] }}<br>
+                        Телефон: {{ firm[4] }}<br>
+                        {% if current_user.idFirm == 1 %}
+                            <br>
+                            <input class="btn btn-default" type="button" name="b_{{ firm[0] }}" id="{{ firm[0] }}" value="Выбрать" onclick="buttonClick(this)"/>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    <script type="text/javascript">
+    function buttonClick (button)
+    {
+        document.getElementById("idAdvertisement").value = button.id;
+        document.querySelector("input[id*='submit']").click();
+    }
+    </script>
+{% endblock %}
+
+{% block app_content %}
+    <div style='display: none;'>
+        <form action='' method='post' novalidate>
+            {{ form.hidden_tag() }}
+            {{ form.idAdvertisement() }}
+            {{ form.submit() }}
+        </form>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            {% for ad in ads %}
+                <div class="well well-sm">
+                    <p>
+                        <img src="{{ ad[2] }}" height="120" hspace="10" vspace="5" align="left">
+                        <b>{{ ad[1] }}</b> <br>
+                        Номер объявления: {{ ad[0] }}<br>
+                        Дата подачи: {{ ad[4] }}<br>
+                        Дата завершения: {{ ad[5] }}<br>
+                        Требуемое кол-во дней: {{ ad[3] }}<br>
+                        Описание:<br>
+                        {{ ad[6] }}<br>
+                        {% if ad[5] < ad[7] %}
+                            <input class="btn btn-default" type="button" name="b_{{ ad[0] }}" id="{{ ad[0] }}" value="Подать снова" onclick="buttonClick(this)"/>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

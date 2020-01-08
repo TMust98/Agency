@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="row">
+        <div class="col-md-6">
+            {% for contract in contracts %}
+                <div class="well well-sm">
+                    <p>
+                        <b>{{ contract[0] }}</b> <br>
+                        Дата начала действия: {{ contract[1] }}<br>
+                        Дата окончания действия: {{ contract[2] }}<br>
+                        Цена: {{ contract[3] }} р.<br>
+                        Номер щита: {{ contract[4] }}<br>
+                        Номер объявления: {{ contract[5] }}<br>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

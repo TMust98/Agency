@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            {% for ad in ads %}
+                <div class="well well-sm">
+                    <p>
+                        <img src="{{ ad[2] }}" height="120" hspace="10" vspace="5" align="left">
+                        <b>{{ ad[1] }}</b> <br>
+                        Номер объявления: {{ ad[0] }}<br>
+                        Дата подачи: {{ ad[4] }}<br>
+                        Требуемое кол-во дней: {{ ad[3] }}<br>
+                        Описание:<br>
+                        {{ ad[5] }}<br>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

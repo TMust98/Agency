@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    <script type="text/javascript">
+    function buttonClick (button)
+    {
+        document.getElementById("idShield").value = button.id;
+        document.querySelector("input[id*='submit']").click();
+    }
+    </script>
+{% endblock %}
+
+{% block app_content %}
+    <div style='display: none;'>
+        <form action='' method='post' novalidate>
+            {{ form.hidden_tag() }}
+            {{ form.idShield() }}
+            {{ form.submit() }}
+        </form>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            {% for shield in shields %}
+                <div class="well well-sm">
+                    <p>
+                        <img src="{{ shield[2] }}" height="120" hspace="10" vspace="5" align="left">
+                        <b>{{ shield[1] }}</b> <br>
+                        Номер щита: {{ shield[0] }}<br>
+                        Адрес: {{ shield[3] }}<br>
+                        Цена: {{ shield[4] }} р. в день<br>
+                        Описание:<br>
+                        {{ shield[5] }}<br>
+                        {% if shield[6] == 0 %}
+                            <input class="btn btn-default" type="button" name="b_{{ shield[0] }}" id="{{ shield[0] }}" value="Освободить" onclick="buttonClick(this)"/>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

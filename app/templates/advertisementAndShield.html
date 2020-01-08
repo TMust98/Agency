@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block scripts %}
+    <script type="text/javascript">
+    function buttonClickAd (button)
+    {
+        ad_id = button.id.split('_');
+        document.getElementById("idAdvertisement").value = ad_id[1];
+    }
+    function buttonClickSh (button)
+    {
+        sh_id = button.id.split('_');
+        document.getElementById("idShield").value = sh_id[1];
+    }
+    </script>
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        table.myt
+        {
+            width: 100%;
+        }
+        td.myt
+        {
+            width: 50%;
+            padding: 2%;
+            vertical-align: top;
+        }
+    </style>
+
+{% endblock %}
+
+{% block app_content %}
+    <p>
+        Если вы знаете номера объявления и щита, можете вписать их в данные поля и составить договор.
+        Либо можете выбрать объявление и щит нажимая на кнопку под ними, и они внесутся в поля автоматически.
+    </p>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <table class="myt" id='tableWindow' border='0' cols='3'>
+        <tr>
+            <td class="myt">
+                        {% for ad in ads %}
+                            <div class="well well-sm">
+                                <p>
+                                    <img src="{{ ad[2] }}" height="120" hspace="10" vspace="5" align="left">
+                                    <b>{{ ad[1] }}</b> <br>
+                                    Номер объявления: {{ ad[0] }}<br>
+                                    Дата подачи: {{ ad[4] }}<br>
+                                    Требуемое кол-во дней: {{ ad[3] }}<br>
+                                    Описание:<br>
+                                    {{ ad[5] }}<br>
+                                    <br>
+                                    <input class="btn btn-default" type="button" name="add_{{ ad[0] }}" id="add_{{ ad[0] }}" value="Выбрать" onclick="buttonClickAd(this)"/>
+                                </p>
+                            </div>
+                        {% endfor %}
+            </td>
+            <td class="myt">
+                        {% for shield in shields %}
+                            <div class="well well-sm">
+                                <p>
+                                    <img src="{{ shield[2] }}" height="120" hspace="10" vspace="5" align="left">
+                                    <b>{{ shield[1] }}</b> <br>
+                                    Номер щита: {{ shield[0] }}<br>
+                                    Адрес: {{ shield[3] }}<br>
+                                    Цена: {{ shield[4] }} р. в день<br>
+                                    Описание:<br>
+                                    {{ shield[5] }}<br>
+                                    <br>
+                                    <input class="btn btn-default" type="button" name="sh_{{ shield[0] }}" id="sh_{{ shield[0] }}" value="Выбрать" onclick="buttonClickSh(this)"/>
+                                </p>
+                            </div>
+                        {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

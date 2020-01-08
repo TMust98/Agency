@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    {% if current_user.name != None %}
+        <h1>Добро пожаловать в личный кабинет, {{ current_user.name }}.</h1>
+    {% else %}
+        <h1>Добро пожаловать в личный кабинет, {{ current_user.login }}.</h1>
+    {% endif %}
+    <br>
+    <div class="btn-group">
+        <a class="list-group-item" href="{{ url_for('changePassword') }}">Изменить пароль</a>
+        <a class="list-group-item" href="{{ url_for('changeAccount') }}">Изменить данные аккаунта</a>
+        {% if current_user.idTypeAccountOne == 2 %}
+            <a class="list-group-item" href="{{ url_for('myContracts') }}">Мои договора</a>
+        {% elif current_user.idTypeAccountOne == 3 %}
+            <a class="list-group-item" href="{{ url_for('newAdvertisement') }}">Подать объявление</a>
+            <a class="list-group-item" href="{{ url_for('myAdvertisements') }}">Мои объявление</a>
+        {% elif current_user.idTypeAccountOne == 4 %}
+            <a class="list-group-item" href="{{ url_for('newShield') }}">Добавить щит</a>
+            <a class="list-group-item" href="{{ url_for('myShields') }}">Мои щиты</a>
+        {% endif %}
+        {% if current_user.idTypeAccountTwo == 2 and current_user.idFirm == 1 %}
+            <a class="list-group-item" href="{{ url_for('firms') }}">Указать фирму</a>
+        {% endif %}
+    </div>
+    <br>
+    <br>
+    {% if current_user.idFirm != 1 and current_user.idTypeAccountTwo == 2 %}
+         <div class="row">
+             <div class="col-md-6">
+                <div class="well well-sm">
+                    <p>
+                        <b>Фирма: {{ firm[2] }}</b> <br>
+                        ИНН: {{ firm[1] }}<br>
+                        Email: {{ firm[3] }}<br>
+                        Телефон: {{ firm[4] }}
+                    </p>
+                </div>
+             </div>
+         </div>
+    {% endif %}
+    {% if current_user.idTypeAccountOne == 2 %}
+        <p>Вы агент.</p>
+    {% elif current_user.idTypeAccountOne == 3 %}
+        <p>Вы рекламодатель.</p>
+    {% elif current_user.idTypeAccountOne == 4 %}
+        <p>Вы установщик.</p>
+    {% endif %}
+    {% if current_user.idTypeAccountOne == 1 %}
+        <p>Выбирите род занятий. Его нельзя будет изменить в дальнейшем.</p>
+    {% elif current_user.idTypeAccountOne == 2 %}
+        {% if current_user.servicePrice == None %}
+            <p>Выбирите цена за услуги агента. </p>
+        {% else %}
+            <p>Измените цена за услуги агента.</p>
+            <p>Сейчас: {{ current_user.servicePrice }} рублей.</p>
+        {% endif %}
+    {% elif current_user.idTypeAccountOne == 4 %}
+        {% if current_user.servicePrice == None %}
+            <p>Выбирите цена за услуги установки объявления.</p>
+        {% else %}
+            <p>Измените цена за услуги установки объявления.</p>
+            <p>Сейчас: {{ current_user.servicePrice }} рублей.</p>
+        {% endif %}
+    {% endif %}
+    {% if current_user.idTypeAccountOne != 3 %}
+        <div class="row">
+            <div class="col-md-4">
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
