@@ -150,10 +150,18 @@ def advertisementAndShield():
         cursor.execute('update shield set freedom = false where id = %s;', (form.idShield.data,))
         cursor.execute('select servicePrice from account where id = %s;', (shield[2],))
         installationPrice = cursor.fetchone()
+        if installationPrice[0] is None:
+            installationPrice = 0
+        else:
+            installationPrice = installationPrice[0]
         cursor.execute('select servicePrice from account where id = %s;', (current_user.id,))
         agencyPrice = cursor.fetchone()
+        if agencyPrice[0] is None:
+            agencyPrice = 0
+        else:
+            agencyPrice = agencyPrice[0]
         textContract = "Договор №"
-        cursor.execute('insert into contract (title, dateStart, dateFinish, price, idAccount, idShield, idAdvertisement) values (%s, %s, %s, %s, %s, %s, %s);', (textContract, date.today() + timedelta(1), date.today() + timedelta(1 + advertisement[1]), advertisement[1] * shield[1] + installationPrice[0] + agencyPrice[0], current_user.id, form.idShield.data, form.idAdvertisement.data,))
+        cursor.execute('insert into contract (title, dateStart, dateFinish, price, idAccount, idShield, idAdvertisement) values (%s, %s, %s, %s, %s, %s, %s);', (textContract, date.today() + timedelta(1), date.today() + timedelta(1 + advertisement[1]), advertisement[1] * shield[1] + installationPrice + agencyPrice, current_user.id, form.idShield.data, form.idAdvertisement.data,))
         cursor.execute('select max(id) from contract;')
         contrsctId = cursor.fetchone()
         cursor.execute('update contract set title = %s where id = %s;', (textContract + str(contrsctId[0]), contrsctId[0],))
